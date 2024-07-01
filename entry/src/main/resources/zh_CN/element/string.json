@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "label"
+    },
+    {
+      "name": "Internet_text",
+      "value": "可以使用网络请求吗"
     }
   ]
 }
