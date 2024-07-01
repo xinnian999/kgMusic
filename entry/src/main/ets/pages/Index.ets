@@ -8,6 +8,7 @@ struct Index {
   build() {
     RelativeContainer() {
       Column(){
+
         Column(){
           Text(this.message)
             .id('HelloWorld')
@@ -17,7 +18,7 @@ struct Index {
         }
         Column(){
           Button('登录').onClick(()=>{
-            router.pushUrl({ url:"pages/Login", params: null })
+            router.pushUrl({ url:"pages/Login/index", params: null })
           })
         }
       }.alignRules({

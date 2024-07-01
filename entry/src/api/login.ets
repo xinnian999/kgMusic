@@ -11,9 +11,15 @@ export const sendCodeApi = (mobile: string) => {
     `${baseURL}/captcha/sent?mobile=${mobile}`)
 }
 
-export const loginApi = (mobile: string, code: string) => {
+export const codeLoginApi = (mobile: string, code: string) => {
   return httpRequest.request(
     // 填写HTTP请求的URL地址，可以带参数也可以不带参数。URL地址需要开发者自定义。请求的参数可以在extraData中指定
     `${baseURL}/login/cellphone?mobile=${mobile}&code=${code}`)
+}
+
+export const loginApi = (username: string, password: string) => {
+  return httpRequest.request(
+    // 填写HTTP请求的URL地址，可以带参数也可以不带参数。URL地址需要开发者自定义。请求的参数可以在extraData中指定
+    `${baseURL}/login?username=${username}&password=${password}`)
 }
 
