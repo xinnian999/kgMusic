@@ -21,6 +21,16 @@ export default class EntryAbility extends UIAbility {
         return;
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
+      // AppStorage.setOrCreate('kgCookie',
+      //   'KUGOU_API_PLATFORM=undefined; token=fac4369eee51660f0dbca805a72892e88eeb83549c09074e0c7da2d2f7dd2d33; token=fac4369eee51660f0dbca805a72892e88eeb83549c09074e0c7da2d2f7dd2d33; userid=678590584; vip_type=6; vip_token=6623e7cc285f3950d7b93bd8a400691f')
+    });
+
+    windowStage.loadContent('pages/Login/index', (err) => {
+      if (err.code) {
+        return;
+      }
+      // AppStorage.setOrCreate('kgCookie',
+      //   'KUGOU_API_PLATFORM=undefined; token=fac4369eee51660f0dbca805a72892e88eeb83549c09074e0c7da2d2f7dd2d33; token=fac4369eee51660f0dbca805a72892e88eeb83549c09074e0c7da2d2f7dd2d33; userid=678590584; vip_type=6; vip_token=6623e7cc285f3950d7b93bd8a400691f')
     });
   }
 

@@ -1,9 +1,8 @@
-
-import { getMusicUrlApi } from '../../../../api/getUrl';
 import { codeLoginApi, sendCodeApi } from '../../../../api/login';
 
+
 @Component
-export default  struct CodeLogin {
+export default struct CodeLogin {
   @State private username: string = '';
   @State private code: string = '';
 
@@ -20,24 +19,26 @@ export default  struct CodeLogin {
     const res = await codeLoginApi(this.username, this.code)
     AlertDialog.show({ message: '登陆成功' })
 
-    const cookies = (res.header['set-cookie'] as string[]).map(item => item.split(';')[0]).join(';')
+    const cookies = (res.header['set-cookie'] as string[]).map(item => item.split(';')[0]).join('; ')
     console.log(cookies)
     AppStorage.setOrCreate('kgCookie', cookies)
   }
 
-
   build() {
-    Column({space:30}){
+    Column({ space: 30 }) {
       Column({ space: 20 }) {
         TextInput({ placeholder: '请输入手机号' }).onChange((value: string) => {
           this.username = value;
         })
 
-        Flex({alignItems:ItemAlign.Center,}){
+        Flex({ alignItems: ItemAlign.Center, }) {
           TextInput({ placeholder: '请输入验证码' }).onChange((value: string) => {
             this.code = value;
           })
-          Button('发送验证码').size({width:150,height:30}).margin({left:10}).onClick(this.handleSendCode.bind(this))
+          Button('发送验证码')
+            .size({ width: 150, height: 30 })
+            .margin({ left: 10 })
+            .onClick(this.handleSendCode.bind(this))
         }
       }
       .width('70%')

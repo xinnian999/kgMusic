@@ -1,12 +1,12 @@
-
 import { getMusicUrlApi } from '../../../../api/getUrl';
-import CodeLogin from './CodeLogin'
-import PasswordLogin from './PasswordLogin'
+import CodeLogin from './CodeLogin';
+import PasswordLogin from './PasswordLogin';
+
+// PersistentStorage.persistProp('kgCookie', '');
 
 @Entry
 @Component
 struct Login {
-
   private async handleGetUrl() {
     getMusicUrlApi('6D6BC2D6AE2B21943F810A2CD23E2260').then(res => {
       console.log(JSON.stringify(res))
@@ -32,7 +32,7 @@ struct Login {
 
         }.height('60%')
 
-        Button('测试获取歌曲URL').onClick(this.handleGetUrl.bind(this)).margin({ top:30 })
+        Button('测试获取歌曲URL').onClick(this.handleGetUrl.bind(this)).margin({ top: 30 })
 
       }.alignRules({
         center: { anchor: '__container__', align: VerticalAlign.Center },
