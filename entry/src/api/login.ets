@@ -3,7 +3,7 @@ import { http } from '@kit.NetworkKit';
 // 每一个httpRequest对应一个HTTP请求任务，不可复用
 let httpRequest = http.createHttp();
 
-const baseURL = 'http://localhost:3000'
+const baseURL = 'http://hyl999.co:3000'
 
 export const sendCodeApi = (mobile: string) => {
   return httpRequest.request(

@@ -2,20 +2,28 @@ import { getMusicUrlApi } from '../../../../api/getUrl';
 import CodeLogin from './CodeLogin';
 import PasswordLogin from './PasswordLogin';
 
-// PersistentStorage.persistProp('kgCookie', '');
+PersistentStorage.persistProp('kgCookie', '12');
 
 @Entry
 @Component
 struct Login {
+  @StorageLink('kgCookie') kgCookie: string = '0'
+
   private async handleGetUrl() {
+    // this.kgCookie = '20'
+
     getMusicUrlApi('6D6BC2D6AE2B21943F810A2CD23E2260').then(res => {
       console.log(JSON.stringify(res))
+
     })
   }
 
   build() {
     RelativeContainer() {
+
+
       Column({ space: 30 }) {
+        // Text(this.kgCookie).fontSize(30)
         Text('登录酷狗音乐')
           .fontSize(30)
           .fontWeight(FontWeight.Bold)

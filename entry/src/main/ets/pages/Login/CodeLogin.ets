@@ -5,6 +5,7 @@ import { codeLoginApi, sendCodeApi } from '../../../../api/login';
 export default struct CodeLogin {
   @State private username: string = '';
   @State private code: string = '';
+  @StorageLink('kgCookie') kgCookie: string = '0'
 
   private async handleSendCode() {
     if (!this.username) {
@@ -20,8 +21,9 @@ export default struct CodeLogin {
     AlertDialog.show({ message: '登陆成功' })
 
     const cookies = (res.header['set-cookie'] as string[]).map(item => item.split(';')[0]).join('; ')
-    console.log(cookies)
+
     AppStorage.setOrCreate('kgCookie', cookies)
+    this.kgCookie = cookies
   }
 
   build() {
