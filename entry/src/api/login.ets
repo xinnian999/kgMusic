@@ -6,6 +6,7 @@ let httpRequest = http.createHttp();
 const baseURL = 'http://hyl999.co:3000'
 
 export const sendCodeApi = (mobile: string) => {
+  console.log('发送验证码')
   return httpRequest.request(
     // 填写HTTP请求的URL地址，可以带参数也可以不带参数。URL地址需要开发者自定义。请求的参数可以在extraData中指定
     `${baseURL}/captcha/sent?mobile=${mobile}`)

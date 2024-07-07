@@ -1,17 +1,20 @@
-import router from '@ohos.router';
 import { AVPlayerDemo } from './audio';
+import router from '@ohos.router';
 
 @Entry
 @Component
 struct Welcome {
   @State message: string = 'Hello 酷狗';
 
-  onDidBuild(): void {
+  async onDidBuild(): Promise<void> {
     const player = new AVPlayerDemo()
-    player.avPlayerUrlDemo()
+    player.avPlayerResFileDemo()
+    player.avPlayerLiveDemo()
+
     setTimeout(() => {
+
       router.pushUrl({ url: "pages/Index", params: null })
-    }, 150000)
+    }, 1000)
   }
 
   build() {

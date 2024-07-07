@@ -11,6 +11,7 @@ export class AVPlayerDemo {
 
   // 注册avplayer回调函数
   setAVPlayerCallback(avPlayer: media.AVPlayer) {
+    avPlayer.loop = true
     // seek操作结果回调函数
     avPlayer.on('seekDone', (seekDoneTime: number) => {
       console.info(`AVPlayer seek succeeded, seek time is ${seekDoneTime}`);
@@ -72,6 +73,24 @@ export class AVPlayerDemo {
     })
   }
 
+  async avPlayerResFileDemo() {
+    // 创建avPlayer实例对象
+    let avPlayer: media.AVPlayer = await media.createAVPlayer();
+    // 创建状态机变化回调函数
+    this.setAVPlayerCallback(avPlayer);
+    let fdPath = 'fd://';
+    // 通过UIAbilityContext获取沙箱地址filesDir，以Stage模型为例
+    let context = getContext(this) as common.UIAbilityContext;
+    let pathDir = context.resourceDir;
+    let path = pathDir + '/login.mp3';
+    // 打开相应的资源文件地址获取fd，并为url赋值触发initialized状态机上报
+    let file = await fileIo.open(path);
+    fdPath = fdPath + '' + file.fd;
+    this.isSeek = true; // 支持seek操作
+    avPlayer.url = fdPath;
+    console.log('AVPlayer fdPath', fdPath)
+  }
+
   // 以下demo为使用fs文件系统打开沙箱地址获取媒体文件地址并通过url属性进行播放示例
   async avPlayerUrlDemo() {
     // 创建avPlayer实例对象
@@ -83,7 +102,7 @@ export class AVPlayerDemo {
     let context = getContext(this) as common.UIAbilityContext;
     let pathDir = context.filesDir;
     let path = pathDir + '/01.mp3';
-    console.log('pathDir', pathDir)
+    // console.log('pathDir', pathDir)
     // 打开相应的资源文件地址获取fd，并为url赋值触发initialized状态机上报
     let file = await fileIo.open(path);
     fdPath = fdPath + '' + file.fd;
@@ -182,6 +201,7 @@ export class AVPlayerDemo {
     // 创建状态机变化回调函数
     this.setAVPlayerCallback(avPlayer);
     this.isSeek = false; // 不支持seek操作
-    avPlayer.url = 'http://xxx.xxx.xxx.xxx:xx/xx/index.m3u8';
+    avPlayer.url =
+      'https://fsmobile.tx.kugou.com/202407060942/36241f7e03e74d68fcfd5e8eca405c1a/v2/6d6bc2d6ae2b21943f810a2cd23e2260/G371/M09/1F/8D/U5UEAGU8JymAI_7OAEHgbDuPcvo588.mp3';
   }
 }
