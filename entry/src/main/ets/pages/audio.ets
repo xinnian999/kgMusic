@@ -11,7 +11,7 @@ export class AVPlayerDemo {
 
   // 注册avplayer回调函数
   setAVPlayerCallback(avPlayer: media.AVPlayer) {
-    avPlayer.loop = true
+    // avPlayer.loop = true
     // seek操作结果回调函数
     avPlayer.on('seekDone', (seekDoneTime: number) => {
       console.info(`AVPlayer seek succeeded, seek time is ${seekDoneTime}`);
@@ -83,10 +83,11 @@ export class AVPlayerDemo {
     let context = getContext(this) as common.UIAbilityContext;
     let pathDir = context.resourceDir;
     let path = pathDir + '/login.mp3';
+
     // 打开相应的资源文件地址获取fd，并为url赋值触发initialized状态机上报
     let file = await fileIo.open(path);
     fdPath = fdPath + '' + file.fd;
-    this.isSeek = true; // 支持seek操作
+    this.isSeek = false; // 支持seek操作
     avPlayer.url = fdPath;
     console.log('AVPlayer fdPath', fdPath)
   }
@@ -202,6 +203,6 @@ export class AVPlayerDemo {
     this.setAVPlayerCallback(avPlayer);
     this.isSeek = false; // 不支持seek操作
     avPlayer.url =
-      'https://fsmobile.tx.kugou.com/202407060942/36241f7e03e74d68fcfd5e8eca405c1a/v2/6d6bc2d6ae2b21943f810a2cd23e2260/G371/M09/1F/8D/U5UEAGU8JymAI_7OAEHgbDuPcvo588.mp3';
+      'https://webfs.hw.kugou.com/202407071221/d333070025df62791fc1107c96c2a124/v2/6d6bc2d6ae2b21943f810a2cd23e2260/G371/M09/1F/8D/U5UEAGU8JymAI_7OAEHgbDuPcvo588.mp3';
   }
 }
