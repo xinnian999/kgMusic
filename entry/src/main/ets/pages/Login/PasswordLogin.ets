@@ -1,22 +1,13 @@
-import { loginApi } from '../../../../api/login';
+import { AxiosResponse } from '@ohos/axios';
+import { loginApi } from '../../api/login';
 
 @Component
-export default  struct PasswordLogin {
+export default struct PasswordLogin {
   @State private username: string = '';
   @State private password: string = '';
-  
-
-  private async handleSubmit() {
-    const res = await loginApi(this.username, this.password)
-    AlertDialog.show({ message: '登陆成功' })
-    // console.log(res.cookies)
-    // const cookies = (res.header['set-cookie'] as string[]).map(item => item.split(';')[0]).join(';')
-    // AppStorage.setOrCreate('kgCookie', cookies)
-  }
-
 
   build() {
-    Column({space:30}){
+    Column({ space: 30 }) {
       Column({ space: 20 }) {
         TextInput({ placeholder: '请输入手机号' }).onChange((value: string) => {
           this.username = value;
@@ -37,5 +28,13 @@ export default  struct PasswordLogin {
       }
     }
 
+  }
+
+  private async handleSubmit() {
+    const res: AxiosResponse = await loginApi(this.username, this.password)
+    AlertDialog.show({ message: '登陆成功' })
+    // console.log(res.cookies)
+    // const cookies = (res.header['set-cookie'] as string[]).map(item => item.split(';')[0]).join(';')
+    // AppStorage.setOrCreate('kgCookie', cookies)
   }
 }

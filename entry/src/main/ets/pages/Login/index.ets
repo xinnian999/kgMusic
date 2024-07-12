@@ -1,4 +1,5 @@
-import { getMusicUrlApi } from '../../../../api/getUrl';
+import { AxiosError, AxiosResponse } from '@ohos/axios';
+import { getMusicUrlApi } from '../../api/getUrl';
 import CodeLogin from './CodeLogin';
 import PasswordLogin from './PasswordLogin';
 
@@ -45,11 +46,13 @@ struct Login {
   }
 
   private async handleGetUrl() {
-    // this.kgCookie = '20'
 
-    getMusicUrlApi('6D6BC2D6AE2B21943F810A2CD23E2260').then(res => {
+    getMusicUrlApi('6D6BC2D6AE2B21943F810A2CD23E2260').then((res: AxiosResponse) => {
       console.log(JSON.stringify(res))
 
+    }).catch((err: AxiosError) => {
+      console.log('err', JSON.stringify(err))
     })
+
   }
 }

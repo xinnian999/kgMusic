@@ -1,5 +1,6 @@
-import { codeLoginApi, sendCodeApi } from '../../../../api/login';
+import { codeLoginApi, sendCodeApi } from '../../api/login';
 import { router } from '@kit.ArkUI';
+import { AxiosResponse } from '@ohos/axios';
 
 
 @Component
@@ -42,21 +43,16 @@ export default struct CodeLogin {
       AlertDialog.show({ message: '请先输入手机号' })
       return
     }
-    const res = await sendCodeApi(this.username)
-    console.log(JSON.stringify(res.result))
+    await sendCodeApi(this.username)
+    // console.log(JSON.stringify(res.result))
     AlertDialog.show({ message: '验证码已发送' })
   }
 
   private async handleSubmit() {
-    const res = await codeLoginApi(this.username, this.code)
+    const res: AxiosResponse = await codeLoginApi(this.username, this.code)
     AlertDialog.show({ message: '登陆成功' })
 
-    const cookies = (res.header['set-cookie'] as string[]).map(item => item.split(';')[0]).join('; ')
-    const userInfo = res.result
-    // console.log(typeof userInfo, JSON.parse(userInfo as string))
-
-    AppStorage.setOrCreate('kgCookie', cookies)
-    AppStorage.setOrCreate('userInfo', JSON.parse(userInfo as string).data)
+    AppStorage.setOrCreate('userInfo', res.data)
 
     router.pushUrl({ url: 'pages/Index/index' })
   }
