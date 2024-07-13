@@ -92,117 +92,16 @@ export class AVPlayerDemo {
     console.log('AVPlayer fdPath', fdPath)
   }
 
-  // 以下demo为使用fs文件系统打开沙箱地址获取媒体文件地址并通过url属性进行播放示例
-  async avPlayerUrlDemo() {
-    // 创建avPlayer实例对象
-    let avPlayer: media.AVPlayer = await media.createAVPlayer();
-    // 创建状态机变化回调函数
-    this.setAVPlayerCallback(avPlayer);
-    let fdPath = 'fd://';
-    // 通过UIAbilityContext获取沙箱地址filesDir，以Stage模型为例
-    let context = getContext(this) as common.UIAbilityContext;
-    let pathDir = context.filesDir;
-    let path = pathDir + '/01.mp3';
-    // console.log('pathDir', pathDir)
-    // 打开相应的资源文件地址获取fd，并为url赋值触发initialized状态机上报
-    let file = await fileIo.open(path);
-    fdPath = fdPath + '' + file.fd;
-    this.isSeek = true; // 支持seek操作
-    avPlayer.url = fdPath;
-  }
-
-  // 以下demo为使用资源管理接口获取打包在HAP内的媒体资源文件并通过fdSrc属性进行播放示例
-  async avPlayerFdSrcDemo() {
-    // 创建avPlayer实例对象
-    let avPlayer: media.AVPlayer = await media.createAVPlayer();
-    // 创建状态机变化回调函数
-    this.setAVPlayerCallback(avPlayer);
-    // 通过UIAbilityContext的resourceManager成员的getRawFd接口获取媒体资源播放地址
-    // 返回类型为{fd,offset,length},fd为HAP包fd地址，offset为媒体资源偏移量，length为播放长度
-    let context = getContext(this) as common.UIAbilityContext;
-    let fileDescriptor = await context.resourceManager.getRawFd('01.mp3');
-    let avFileDescriptor: media.AVFileDescriptor =
-      { fd: fileDescriptor.fd, offset: fileDescriptor.offset, length: fileDescriptor.length };
-    this.isSeek = true; // 支持seek操作
-    // 为fdSrc赋值触发initialized状态机上报
-    avPlayer.fdSrc = avFileDescriptor;
-  }
-
-  // 以下demo为使用fs文件系统打开沙箱地址获取媒体文件地址并通过dataSrc属性进行播放(seek模式)示例
-  async avPlayerDataSrcSeekDemo() {
-    // 创建avPlayer实例对象
-    let avPlayer: media.AVPlayer = await media.createAVPlayer();
-    // 创建状态机变化回调函数
-    this.setAVPlayerCallback(avPlayer);
-    // dataSrc播放模式的的播放源地址，当播放为Seek模式时fileSize为播放文件的具体大小，下面会对fileSize赋值
-    let src: media.AVDataSrcDescriptor = {
-      fileSize: -1,
-      callback: (buf: ArrayBuffer, length: number, pos: number | undefined) => {
-        let num = 0;
-        if (buf == undefined || length == undefined || pos == undefined) {
-          return -1;
-        }
-        num = fileIo.readSync(this.fd, buf, { offset: pos, length: length });
-        if (num > 0 && (this.fileSize >= pos)) {
-          return num;
-        }
-        return -1;
-      }
-    }
-    let context = getContext(this) as common.UIAbilityContext;
-    // 通过UIAbilityContext获取沙箱地址filesDir，以Stage模型为例
-    let pathDir = context.filesDir;
-
-    let path = pathDir + '/01.mp3';
-    await fileIo.open(path).then((file: fileIo.File) => {
-      this.fd = file.fd;
-    })
-    // 获取播放文件的大小
-    this.fileSize = fileIo.statSync(path).size;
-    src.fileSize = this.fileSize;
-    this.isSeek = true; // 支持seek操作
-    avPlayer.dataSrc = src;
-  }
-
-  // 以下demo为使用fs文件系统打开沙箱地址获取媒体文件地址并通过dataSrc属性进行播放(No seek模式)示例
-  async avPlayerDataSrcNoSeekDemo() {
-    // 创建avPlayer实例对象
-    let avPlayer: media.AVPlayer = await media.createAVPlayer();
-    // 创建状态机变化回调函数
-    this.setAVPlayerCallback(avPlayer);
-    let context = getContext(this) as common.UIAbilityContext;
-    let src: media.AVDataSrcDescriptor = {
-      fileSize: -1,
-      callback: (buf: ArrayBuffer, length: number) => {
-        let num = 0;
-        if (buf == undefined || length == undefined) {
-          return -1;
-        }
-        num = fileIo.readSync(this.fd, buf);
-        if (num > 0) {
-          return num;
-        }
-        return -1;
-      }
-    }
-    // 通过UIAbilityContext获取沙箱地址filesDir，以Stage模型为例
-    let pathDir = context.filesDir;
-    let path = pathDir + '/01.mp3';
-    await fileIo.open(path).then((file: fileIo.File) => {
-      this.fd = file.fd;
-    })
-    this.isSeek = false; // 不支持seek操作
-    avPlayer.dataSrc = src;
-  }
 
   // 以下demo为通过url设置网络地址来实现播放直播码流的demo
-  async avPlayerLiveDemo() {
+  async avPlayerLiveDemo(url: string) {
     // 创建avPlayer实例对象
     let avPlayer: media.AVPlayer = await media.createAVPlayer();
     // 创建状态机变化回调函数
     this.setAVPlayerCallback(avPlayer);
     this.isSeek = false; // 不支持seek操作
-    avPlayer.url =
-      'https://webfs.hw.kugou.com/202407071221/d333070025df62791fc1107c96c2a124/v2/6d6bc2d6ae2b21943f810a2cd23e2260/G371/M09/1F/8D/U5UEAGU8JymAI_7OAEHgbDuPcvo588.mp3';
+    avPlayer.url = url;
+
+    return avPlayer
   }
 }

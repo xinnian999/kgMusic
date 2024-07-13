@@ -2,6 +2,8 @@
   "src": [
     "pages/welcome",
     "pages/Index/index",
-    "pages/Login/index"
+    "pages/Login/index",
+    "pages/Singer/index",
+    "pages/Singer/Detail"
   ]
 }
