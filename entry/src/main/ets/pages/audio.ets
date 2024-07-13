@@ -38,22 +38,22 @@ export class AVPlayerDemo {
           break;
         case 'playing': // play成功调用后触发该状态机上报
           console.info('AVPlayer state playing called.');
-          if (this.count !== 0) {
-            if (this.isSeek) {
-              console.info('AVPlayer start to seek.');
-              avPlayer.seek(avPlayer.duration); //seek到音频末尾
-            } else {
-              // 当播放模式不支持seek操作时继续播放到结尾
-              console.info('AVPlayer wait to play end.');
-            }
-          } else {
-            avPlayer.pause(); // 调用暂停接口暂停播放
-          }
-          this.count++;
+        // if (this.count !== 0) {
+        //   if (this.isSeek) {
+        //     console.info('AVPlayer start to seek.');
+        //     avPlayer.seek(avPlayer.duration); //seek到音频末尾
+        //   } else {
+        //     // 当播放模式不支持seek操作时继续播放到结尾
+        //     console.info('AVPlayer wait to play end.');
+        //   }
+        // } else {
+        //   avPlayer.pause(); // 调用暂停接口暂停播放
+        // }
+        // this.count++;
           break;
         case 'paused': // pause成功调用后触发该状态机上报
           console.info('AVPlayer state paused called.');
-          avPlayer.play(); // 再次播放接口开始播放
+        // avPlayer.play(); // 再次播放接口开始播放
           break;
         case 'completed': // 播放结束后触发该状态机上报
           console.info('AVPlayer state completed called.');
