@@ -1,6 +1,7 @@
 import navConfig from './navConfig';
 import Music from './music'
 import My from './my'
+import PlayBar from '../PlayBar'
 
 PersistentStorage.persistProp('kgCookie', '12');
 PersistentStorage.persistProp('userInfo', {});
@@ -18,6 +19,7 @@ struct Index {
         } else if (this.activeMenu === 'my') {
           My()
         }
+        PlayBar()
 
       }
       .padding({ top: 20 })
@@ -44,6 +46,7 @@ struct Index {
           this.activeMenu = item.key
         }
       } as ToolbarItem)))
+
     }
 
   }
