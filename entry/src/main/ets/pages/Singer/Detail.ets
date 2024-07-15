@@ -1,73 +1,30 @@
-import { singerAudiosApi, singerAlbumsApi } from './api'
+import { singerAudiosApi } from './api'
 import type { AxiosResponse } from '@ohos/axios'
 import router from '@ohos.router'
 import { Singer } from '.';
-import { getMusicUrlApi } from '../../api/getUrl';
-import { AVPlayerDemo } from '../audio';
-import { media } from '@kit.MediaKit';
 import PlayBar from '../PlayBar';
+import AudioRow from '../AudioRow';
 
 
 interface SingerAudio {
   audio_id: number,
+  album_id: number,
   audio_name: string,
   author_name: string,
   album_name: string,
   hash: string
 }
 
-interface SingerAlbum {
-  album_name: string,
-  sizable_cover: string
-}
-
 @Entry
 @Component
 struct Detail {
   routerParams: Singer = router.getParams() as Singer;
-  @StorageLink('audio') audio: media.AVPlayer | null = null;
-  @StorageLink('audioId') audioId: number = 0;
-  @StorageLink('audioName') audioName: string = '';
-  @StorageLink('authorName') authorName: string = '';
-  @StorageLink('audioAvatar') audioAvatar: string | undefined = '';
-  @StorageLink('playing') playing: boolean = false;
   @State singerAudios: SingerAudio[] = []
-  @State singerAlbums: SingerAlbum[] = []
 
   async onDidBuild() {
     const audiosRes: AxiosResponse = await singerAudiosApi(this.routerParams.singerid) as AxiosResponse
-    const albumsRes: AxiosResponse = await singerAlbumsApi(this.routerParams.singerid) as AxiosResponse
 
     this.singerAudios = audiosRes.data.data
-    this.singerAlbums = albumsRes.data.data
-    console.log(JSON.stringify(this.singerAudios))
-  }
-
-  async handlePlay(data: SingerAudio) {
-    if (data.audio_id === this.audioId) {
-      if (this.playing) {
-        this.audio?.pause()
-        this.playing = false
-      } else {
-        this.audio?.play()
-        this.playing = true
-      }
-    } else {
-      // console.log('播放新歌曲')
-      //先取消上一个audio
-      this.audio?.release()
-
-      const res: AxiosResponse = await getMusicUrlApi(data.hash)
-      const url: string = res.data.url[0]
-      this.audio = await new AVPlayerDemo().avPlayerLiveDemo(url)
-      this.audioId = data.audio_id
-      this.audioName = data.audio_name
-      this.authorName = data.author_name
-      this.audioAvatar =
-        this.singerAlbums.find(v => v.album_name === data.album_name)?.sizable_cover.replace('\{size\}',
-          '120')
-      this.playing = true
-    }
   }
 
   build() {
@@ -93,25 +50,21 @@ struct Detail {
           .backgroundImageSize(ImageSize.Cover)
           .padding(15)
 
+          Column() {
+            ForEach(this.singerAudios, (item: SingerAudio, index) => {
+              GridItem() {
 
-          ForEach(this.singerAudios, (item: SingerAudio, index) => {
-            GridItem() {
-              Flex({ alignItems: ItemAlign.Center }) {
-                Column() {
-                  Image(this.singerAlbums.find(v => v.album_name === item.album_name)?.sizable_cover.replace('\{size\}',
-                    '120')).borderRadius(8)
-                }.width(50).height(50)
-
-                Column() {
-                  Text(item.audio_name)
-                    .margin({ bottom: 10 })
-                    .fontColor(item.audio_id === this.audioId ? '#3d98ff' : '')
-                  Text(`${item.author_name} - ${item.album_name}`).fontSize(13).fontColor('#999')
-                    .fontColor(item.audio_id === this.audioId ? '#3d98ff' : '')
-                }.alignItems(HorizontalAlign.Start).margin({ left: 15 })
-              }.height(90).padding(20).onClick(() => this.handlePlay(item))
-            }
-          })
+                AudioRow({
+                  aid: item.audio_id,
+                  name: item.audio_name,
+                  author: item.author_name,
+                  hash: item.hash,
+                  albumId: item.album_id
+                })
+              }
+            })
+          }
+          .padding({ left: 15, right: 15 })
 
         }
       }

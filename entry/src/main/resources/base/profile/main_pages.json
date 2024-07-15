@@ -4,6 +4,7 @@
     "pages/Index/index",
     "pages/Login/index",
     "pages/Singer/index",
-    "pages/Singer/Detail"
+    "pages/Singer/Detail",
+    "pages/PlayPage"
   ]
 }

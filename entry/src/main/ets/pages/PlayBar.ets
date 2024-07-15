@@ -1,4 +1,5 @@
 import { media } from '@kit.MediaKit';
+import router from '@ohos.router';
 
 @Component
 export default struct PlayBar {
@@ -30,7 +31,8 @@ export default struct PlayBar {
           Column() {
             Text(this.audioName)
               .margin({ bottom: 10 })
-            Text(this.authorName).fontSize(13).fontColor('#999')
+              .fontColor('#fff')
+            Text(this.authorName).fontSize(13).fontColor('#ffe7e5e5')
 
           }.alignItems(HorizontalAlign.Start).margin({ left: 15 })
         }
@@ -38,22 +40,27 @@ export default struct PlayBar {
 
         Column() {
           Row() {
-            Image(this.playing ? $r('app.media.pause') : $r('app.media.play'))
+            Image(this.playing ? $r('app.media.audio_pause') : $r('app.media.audio_play'))
           }.width(20).height(20).margin({ right: 15 }).onClick(this.handleSwitch.bind(this))
         }
 
       }
       .borderRadius(8)
       .border({ width: 1, color: '#eee' })
-      .backgroundColor('#fff')
       .width('95%')
       .height(60)
       .padding(5)
+      .backgroundImage(this.audioAvatar)
+      .backgroundImageSize(ImageSize.FILL)
+      .backdropBlur(300)
     }
     .width('100%')
     .alignItems(HorizontalAlign.Center)
     .position({ top: '99%' })
     .markAnchor({ y: '100%' })
     .visibility(this.audioId ? Visibility.Visible : Visibility.Hidden)
+    .onClick(() => {
+      router.pushUrl({ url: "pages/PlayPage" })
+    })
   }
 }

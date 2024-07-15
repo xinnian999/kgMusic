@@ -1,9 +1,33 @@
 import Menus from './menus'
 import type { Item } from './menus'
 import router from '@ohos.router'
+import request from '../../../api/request'
+import { AxiosResponse } from '@ohos/axios'
+import AudioRow from '../../AudioRow'
+
+interface AudioItem {
+  songid: number,
+  album_id: number,
+  songname: string,
+  author_name: string,
+  album_name: string,
+  hash: string
+}
 
 @Component
 export default struct My {
+  @State songList: AudioItem[] = []
+
+  async fetchSongList() {
+    const res: AxiosResponse = await request(`/top/card?card_id=3&timestamp=${Date.now()}`)
+    this.songList = res.data.data.song_list
+    console.log(JSON.stringify(res.data.data.song_list))
+  }
+
+  async onDidBuild() {
+    this.fetchSongList()
+  }
+
   @Builder
   Item(data: Item) {
     Column() {
@@ -24,41 +48,77 @@ export default struct My {
   }
 
   build() {
-    Column() {
-      TextInput({ placeholder: 'search...' }).height(40)
+    Scroll() {
+      Column() {
+        TextInput({ placeholder: 'search...' }).height(40)
 
-      Scroll() {
-        Flex() {
-          Column() {
-            this.Item({
-              title: '每日推荐', desc: '精选30首', bg: '#571fa0'
-            })
-          }.width(120).margin({ right: 10 })
+        Scroll() {
+          Flex() {
+            Column() {
+              this.Item({
+                title: '每日推荐', desc: '精选30首', bg: '#571fa0'
+              })
+            }.width(120).margin({ right: 10 })
 
-          Grid() {
+            Grid() {
 
-            ForEach(Menus, (item: Item, index) => {
-              GridItem() {
-                this.Item(item)
-              }
-            })
+              ForEach(Menus, (item: Item, index) => {
+                GridItem() {
+                  this.Item(item)
+                }
+              })
 
+            }
+            .width(250)
+            .columnsTemplate('1fr 1fr 1fr')
+            .rowsTemplate('1fr 1fr')
+            .columnsGap(10)
+            .rowsGap(10)
           }
-          .width(250)
-          .columnsTemplate('1fr 1fr 1fr')
-          .rowsTemplate('1fr 1fr')
-          .columnsGap(10)
-          .rowsGap(10)
+
         }
+        .scrollable(ScrollDirection.Horizontal)
+        .scrollBar(BarState.Auto)
+        .scrollBarColor("#999")
+        .scrollBarWidth(5)
+        .edgeEffect(EdgeEffect.Fade)
+        .margin({ top: 20 })
+        .height(180)
 
-      }
-      .scrollable(ScrollDirection.Horizontal)
-      .scrollBar(BarState.Auto)
-      .scrollBarColor("#999")
-      .scrollBarWidth(5)
-      .edgeEffect(EdgeEffect.Fade)
-      .margin({ top: 20 })
+        Column() {
+          Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.SpaceBetween }) {
+            Text('热歌推荐')
+            Image($r('app.media.refresh'))
+              .width(18)
+              .height(18)
+              .onClick(this.fetchSongList.bind(this))
+          }
 
-    }.width("90%").height(180)
+
+          ForEach(this.songList, (item: AudioItem, index) => {
+            GridItem() {
+
+              AudioRow({
+                aid: item.songid,
+                name: item.songname,
+                author: item.author_name,
+                hash: item.hash,
+                albumId: item.album_id
+              })
+            }
+          })
+        }
+        .width('100%')
+        .margin({ top: 20 })
+        .alignItems(HorizontalAlign.Start)
+
+      }.width("90%")
+    }
+    .width("100%")
+    .scrollBar(BarState.Auto)
+    .scrollBarColor("#999")
+    .scrollBarWidth(5)
+    .edgeEffect(EdgeEffect.Fade)
+
   }
 }

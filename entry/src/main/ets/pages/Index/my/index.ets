@@ -9,6 +9,7 @@ export default struct My {
     const kgCookie = AppStorage.get<string>('kgCookie')
     console.log('My', JSON.stringify(userInfo));
     console.log('kgCookie', kgCookie);
+
   }
 
   build() {
