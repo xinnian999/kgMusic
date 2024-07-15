@@ -7,7 +7,8 @@ export default struct PlayPage {
   @StorageLink('audioId') audioId: number = 0;
   @StorageLink('audioName') audioName: string = '歌名';
   @StorageLink('authorName') authorName: string = '歌手';
-  @StorageLink('audioAvatar') audioAvatar: string | undefined = '';
+  @StorageLink('audioAvatar') audioAvatar: string | undefined =
+    'https://img1.baidu.com/it/u=147435362,3227015063&fm=253&fmt=auto&app=138&f=JPEG?w=565&h=855';
   @StorageLink('playing') playing: boolean = false;
 
   pageTransition() {
@@ -54,7 +55,12 @@ export default struct PlayPage {
               .textAlign(TextAlign.Start)
               .fontColor('#ffefeeee')
             Column() {
-
+              Row()
+                .width(10)
+                .height(10)
+                .backgroundColor('#fff')
+                .borderRadius(50)
+                .position({ x: '0%', y: -4 })
             }
             .height(2)
             .width('100%')

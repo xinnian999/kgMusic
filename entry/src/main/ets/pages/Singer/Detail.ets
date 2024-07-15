@@ -59,7 +59,7 @@ struct Detail {
                   name: item.audio_name,
                   author: item.author_name,
                   hash: item.hash,
-                  albumId: item.album_id
+                  albumId: item.album_id,
                 })
               }
             })

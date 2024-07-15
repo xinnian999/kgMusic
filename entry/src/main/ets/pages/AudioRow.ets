@@ -11,6 +11,7 @@ export default struct AudioRow {
   @StorageLink('audioName') audioName: string = '';
   @StorageLink('authorName') authorName: string = '';
   @StorageLink('audioAvatar') audioAvatar: string | undefined = '';
+  @StorageLink('audioDuration') audioDuration: number = 0;
   @StorageLink('playing') playing: boolean = false;
   @Prop aid: number = 0;
   @Prop name: string = '';
@@ -21,7 +22,6 @@ export default struct AudioRow {
 
   async onDidBuild() {
     const res: AxiosResponse = await request(`/album?album_id=${this.albumId}`)
-    console.log(res.data.data[0].sizable_cover)
     this.avatar = res.data.data[0].sizable_cover.replace('\{size\}', 120)
   }
 
@@ -40,13 +40,16 @@ export default struct AudioRow {
       this.audio?.release()
 
       const res: AxiosResponse = await getMusicUrlApi(this.hash)
+
       const url: string = res.data.url[0]
       this.audio = await new AVPlayerDemo().avPlayerLiveDemo(url)
       this.audioId = this.aid
       this.audioName = this.name
       this.authorName = this.author
       this.audioAvatar = this.avatar
+      this.audioDuration = res.data.std_hash_time / 1000
       this.playing = true
+
     }
   }
 
