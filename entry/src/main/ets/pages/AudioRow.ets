@@ -40,6 +40,7 @@ export default struct AudioRow {
       this.audio?.release()
 
       const res: AxiosResponse = await getMusicUrlApi(this.hash)
+      console.log('000', JSON.stringify(res.data))
 
       const url: string = res.data.url[0]
       this.audio = await new AVPlayerDemo().avPlayerLiveDemo(url)
@@ -47,7 +48,7 @@ export default struct AudioRow {
       this.audioName = this.name
       this.authorName = this.author
       this.audioAvatar = this.avatar
-      this.audioDuration = res.data.std_hash_time / 1000
+      this.audioDuration = res.data.std_hash_time
       this.playing = true
 
     }

@@ -4,6 +4,7 @@ import router from '@ohos.router'
 import { Singer } from '.';
 import PlayBar from '../PlayBar';
 import AudioRow from '../AudioRow';
+import { JSON } from '@kit.ArkTS';
 
 
 interface SingerAudio {

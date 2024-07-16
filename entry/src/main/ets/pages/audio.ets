@@ -16,6 +16,10 @@ export class AVPlayerDemo {
     avPlayer.on('seekDone', (seekDoneTime: number) => {
       console.info(`AVPlayer seek succeeded, seek time is ${seekDoneTime}`);
     })
+    avPlayer.on('timeUpdate', (time: number) => {
+      AppStorage.setOrCreate('audioCurrentDuration', time)
+      console.info(`AVPlayer timeUpdate : ${time}`);
+    })
     // error回调监听函数,当avPlayer在操作过程中出现错误时调用 reset接口触发重置流程
     avPlayer.on('error', (err: BusinessError) => {
       console.error(`Invoke avPlayer failed, code is ${err.code}, message is ${err.message}`);

@@ -17,7 +17,7 @@ struct Index {
 
   async onDidBuild() {
     const res: AxiosResponse = await singerListApi()
-    console.log(JSON.stringify(res.data.data.info))
+    // console.log(JSON.stringify(res.data.data.info))
     this.singerList = res.data.data.info[0].singer
   }
 
