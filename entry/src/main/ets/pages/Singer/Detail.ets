@@ -2,8 +2,8 @@ import { singerAudiosApi } from './api'
 import type { AxiosResponse } from '@ohos/axios'
 import router from '@ohos.router'
 import { Singer } from '.';
-import PlayBar from '../PlayBar';
-import AudioRow from '../AudioRow';
+import PlayBar from '../../components/PlayBar';
+import AudioRow from '../../components/AudioRow';
 import { JSON } from '@kit.ArkTS';
 
 
@@ -53,16 +53,14 @@ struct Detail {
 
           Column() {
             ForEach(this.singerAudios, (item: SingerAudio, index) => {
-              GridItem() {
 
-                AudioRow({
-                  aid: item.audio_id,
-                  name: item.audio_name,
-                  author: item.author_name,
-                  hash: item.hash,
-                  albumId: item.album_id,
-                })
-              }
+              AudioRow({
+                aid: item.audio_id,
+                name: item.audio_name,
+                author: item.author_name,
+                hash: item.hash,
+                albumId: item.album_id,
+              })
             })
           }
           .padding({ left: 15, right: 15 })

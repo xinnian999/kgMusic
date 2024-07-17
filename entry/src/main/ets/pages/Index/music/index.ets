@@ -3,7 +3,7 @@ import type { Item } from './menus'
 import router from '@ohos.router'
 import request from '../../../api/request'
 import { AxiosResponse } from '@ohos/axios'
-import AudioRow from '../../AudioRow'
+import AudioRow from '../../../components/AudioRow'
 
 interface AudioItem {
   songid: number,
@@ -50,7 +50,9 @@ export default struct My {
   build() {
     Scroll() {
       Column() {
-        TextInput({ placeholder: 'search...' }).height(40)
+        TextInput({ placeholder: '输入关键词搜索歌曲...' })
+          .height(40)
+          .onClick(() => router.pushUrl({ url: "pages/SearchPage" }))
 
         Scroll() {
           Flex() {
@@ -96,16 +98,14 @@ export default struct My {
 
 
           ForEach(this.songList, (item: AudioItem, index) => {
-            GridItem() {
 
-              AudioRow({
-                aid: item.songid,
-                name: item.songname,
-                author: item.author_name,
-                hash: item.hash,
-                albumId: item.album_id
-              })
-            }
+            AudioRow({
+              aid: item.songid,
+              name: item.songname,
+              author: item.author_name,
+              hash: item.hash,
+              albumId: item.album_id
+            })
           })
         }
         .width('100%')

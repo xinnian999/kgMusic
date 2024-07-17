@@ -1,7 +1,7 @@
 import navConfig from './navConfig';
 import Music from './music'
 import My from './my'
-import PlayBar from '../PlayBar'
+import PlayBar from '../../components/PlayBar'
 
 PersistentStorage.persistProp('kgCookie', '12');
 PersistentStorage.persistProp('userInfo', {});

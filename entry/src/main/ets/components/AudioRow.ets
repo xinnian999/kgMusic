@@ -2,7 +2,7 @@ import { AxiosResponse } from '@ohos/axios';
 import request from '../api/request';
 import { media } from '@kit.MediaKit';
 import { getMusicUrlApi } from '../api/getUrl';
-import { AVPlayerDemo } from './audio';
+import { AVPlayerDemo } from '../utils/audio';
 
 @Component
 export default struct AudioRow {
@@ -66,7 +66,7 @@ export default struct AudioRow {
           Text(this.name)
             .margin({ bottom: 10 })
             .fontColor(this.aid === this.audioId ? '#3d98ff' : '')
-          Text(`${this.name} - ${this.author}`).fontSize(13).fontColor('#999')
+          Text(`${this.author}`).fontSize(13).fontColor('#999')
             .fontColor(this.aid === this.audioId ? '#3d98ff' : '')
         }.alignItems(HorizontalAlign.Start).margin({ left: 15 })
       }

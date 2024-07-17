@@ -1,4 +1,4 @@
-import { AVPlayerDemo } from './audio';
+import { AVPlayerDemo } from '../utils/audio';
 import router from '@ohos.router';
 
 @Entry

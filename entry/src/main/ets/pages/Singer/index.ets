@@ -1,7 +1,7 @@
 import { singerListApi } from './api'
 import type { AxiosResponse } from '@ohos/axios'
 import router from '@ohos.router'
-import PlayBar from '../PlayBar'
+import PlayBar from '../../components/PlayBar'
 
 export interface Singer {
   imgurl: string,
