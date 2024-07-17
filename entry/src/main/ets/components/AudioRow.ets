@@ -1,7 +1,7 @@
 import { AxiosResponse } from '@ohos/axios';
 import request from '../api/request';
 import { media } from '@kit.MediaKit';
-import { getMusicUrlApi } from '../api/getUrl';
+import { getMusicUrlApi, getLyricIdApi, getLyricApi } from '../api/getUrl';
 import { AVPlayerDemo } from '../utils/audio';
 
 @Component
@@ -12,6 +12,7 @@ export default struct AudioRow {
   @StorageLink('authorName') authorName: string = '';
   @StorageLink('audioAvatar') audioAvatar: string | undefined = '';
   @StorageLink('audioDuration') audioDuration: number = 0;
+  @StorageLink('audioLyric') audioLyric: string = '';
   @StorageLink('playing') playing: boolean = false;
   @Prop aid: number = 0;
   @Prop name: string = '';
@@ -39,17 +40,22 @@ export default struct AudioRow {
       //先取消上一个audio
       this.audio?.release()
 
-      const res: AxiosResponse = await getMusicUrlApi(this.hash)
-      console.log('000', JSON.stringify(res.data))
+      const urlRes: AxiosResponse = await getMusicUrlApi(this.hash)
 
-      const url: string = res.data.url[0]
+      const url: string = urlRes.data.url[0]
       this.audio = await new AVPlayerDemo().avPlayerLiveDemo(url)
       this.audioId = this.aid
       this.audioName = this.name
       this.authorName = this.author
       this.audioAvatar = this.avatar
-      this.audioDuration = res.data.std_hash_time
+      this.audioDuration = urlRes.data.std_hash_time
       this.playing = true
+
+      //获取歌词
+      const lyricIdRes: AxiosResponse = await getLyricIdApi(this.hash)
+      const lyricRes: AxiosResponse =
+        await getLyricApi(lyricIdRes.data.candidates[0].id, lyricIdRes.data.candidates[0].accesskey)
+      this.audioLyric = lyricRes.data.decodeContent
 
     }
   }

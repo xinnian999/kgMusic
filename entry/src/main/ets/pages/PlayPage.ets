@@ -17,6 +17,7 @@ export default struct PlayPage {
   @StorageLink('audioAvatar') audioAvatar: string | undefined =
     'https://img1.baidu.com/it/u=147435362,3227015063&fm=253&fmt=auto&app=138&f=JPEG?w=565&h=855';
   @StorageLink('playing') playing: boolean = false;
+  @StorageLink('audioLyric') audioLyric: string = '';
 
   pageTransition() {
     PageTransitionEnter({ type: RouteType.Push, duration: 300 })
@@ -58,9 +59,12 @@ export default struct PlayPage {
         Image(this.audioAvatar).borderRadius(8).width(200).height(200).border({ width: 1, color: '#eee' })
       }.width("100%").alignItems(HorizontalAlign.Center).padding({ top: 50, bottom: 50 })
 
-      Column() {
-        Text('歌词')
-      }.width("100%").alignItems(HorizontalAlign.Center).padding({ top: 20, bottom: 60 })
+      Scroll() {
+        Column() {
+          // Text(this.audioLyric)
+        }.width("100%").height(60).alignItems(HorizontalAlign.Center).padding({ top: 15, bottom: 60 })
+      }
+
 
       Column() {
         Column({ space: 15 }) {
