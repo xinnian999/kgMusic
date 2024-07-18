@@ -18,7 +18,7 @@ export class AVPlayerDemo {
     })
     avPlayer.on('timeUpdate', (time: number) => {
       AppStorage.setOrCreate('audioCurrentDuration', time)
-      console.info(`AVPlayer timeUpdate : ${time}`);
+      // console.info(`AVPlayer timeUpdate : ${time}`);
     })
     // error回调监听函数,当avPlayer在操作过程中出现错误时调用 reset接口触发重置流程
     avPlayer.on('error', (err: BusinessError) => {

@@ -1,6 +1,7 @@
 export interface LyricItem {
   lyric: string,
-  timestamp: number
+  timestamp: number,
+  isCurrent?: boolean
 }
 
 function parseLyric(lyricStr: string) {

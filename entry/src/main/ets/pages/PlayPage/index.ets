@@ -14,11 +14,12 @@ export default struct PlayPage {
   @StorageLink('audioName') audioName: string = '歌名';
   @StorageLink('authorName') authorName: string = '歌手';
   @StorageLink('audioDuration') audioDuration: number = 0;
-  @StorageLink('audioCurrentDuration') audioCurrentDuration: number = 0;
+  @StorageLink('audioCurrentDuration') @Watch('currentDurationChange') audioCurrentDuration: number = 0;
   @StorageLink('audioAvatar') audioAvatar: string | undefined =
     'https://img1.baidu.com/it/u=147435362,3227015063&fm=253&fmt=auto&app=138&f=JPEG?w=565&h=855';
   @StorageLink('playing') playing: boolean = false;
   @StorageLink('audioLyric') audioLyric: string = '';
+  private scroll: Scroller = new Scroller();
 
   pageTransition() {
     PageTransitionEnter({ type: RouteType.Push, duration: 300 })
@@ -36,7 +37,10 @@ export default struct PlayPage {
       this.playing = true
     }
 
+  }
 
+  currentDurationChange() {
+    console.log('currentDurationChange:', String(this.audioCurrentDuration))
   }
 
   @Builder
@@ -63,13 +67,19 @@ export default struct PlayPage {
       }.width("100%").alignItems(HorizontalAlign.Center).padding({ top: 50, bottom: 50 })
 
       //歌词
-      Scroll() {
+      Scroll(this.scroll) {
         Column() {
           ForEach(parseLyric(this.audioLyric), (item: LyricItem) => {
-            Text(item.lyric).fontColor(this.audioCurrentDuration > item.timestamp ? 'green' : '#ffefeeee').height(40)
+            Text(item.lyric)
+              .fontColor(this.audioCurrentDuration > item.timestamp ? 'green' : '#ffefeeee')
+              .height(40)
           })
-        }.width("100%").alignItems(HorizontalAlign.Center)
-      }.height(120).margin({ top: 15, bottom: 60 })
+        }
+        .width("100%")
+        .alignItems(HorizontalAlign.Center)
+      }
+      .height(120)
+      .margin({ top: 15, bottom: 60 })
 
 
       Column() {
