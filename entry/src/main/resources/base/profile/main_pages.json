@@ -5,7 +5,7 @@
     "pages/Login/index",
     "pages/Singer/index",
     "pages/Singer/Detail",
-    "pages/PlayPage",
+    "pages/PlayPage/index",
     "pages/SearchPage"
   ]
 }

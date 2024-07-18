@@ -3,6 +3,7 @@ import request from '../api/request';
 import { media } from '@kit.MediaKit';
 import { getMusicUrlApi, getLyricIdApi, getLyricApi } from '../api/getUrl';
 import { AVPlayerDemo } from '../utils/audio';
+import parseLyric from '../pages/PlayPage/parseLyric';
 
 @Component
 export default struct AudioRow {
@@ -28,6 +29,7 @@ export default struct AudioRow {
 
   async handlePlay() {
     if (this.aid === this.audioId) {
+
       if (this.playing) {
         this.audio?.pause()
         this.playing = false
@@ -40,6 +42,12 @@ export default struct AudioRow {
       //先取消上一个audio
       this.audio?.release()
 
+      //获取歌词
+      const lyricIdRes: AxiosResponse = await getLyricIdApi(this.hash)
+      const lyricRes: AxiosResponse =
+        await getLyricApi(lyricIdRes.data.candidates[0].id, lyricIdRes.data.candidates[0].accesskey)
+      this.audioLyric = lyricRes.data.decodeContent
+
       const urlRes: AxiosResponse = await getMusicUrlApi(this.hash)
 
       const url: string = urlRes.data.url[0]
@@ -51,11 +59,6 @@ export default struct AudioRow {
       this.audioDuration = urlRes.data.std_hash_time
       this.playing = true
 
-      //获取歌词
-      const lyricIdRes: AxiosResponse = await getLyricIdApi(this.hash)
-      const lyricRes: AxiosResponse =
-        await getLyricApi(lyricIdRes.data.candidates[0].id, lyricIdRes.data.candidates[0].accesskey)
-      this.audioLyric = lyricRes.data.decodeContent
 
     }
   }

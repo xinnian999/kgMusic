@@ -60,7 +60,7 @@ export default struct PlayBar {
     .markAnchor({ y: '100%' })
     .visibility(this.audioId ? Visibility.Visible : Visibility.Hidden)
     .onClick(() => {
-      router.pushUrl({ url: "pages/PlayPage" })
+      router.pushUrl({ url: "pages/PlayPage/index" })
     })
   }
 }

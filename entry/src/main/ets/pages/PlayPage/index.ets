@@ -1,4 +1,5 @@
 import { media } from '@kit.MediaKit';
+import parseLyric, { LyricItem } from './parseLyric'
 
 interface ActionParams {
   icon: string
@@ -34,6 +35,8 @@ export default struct PlayPage {
       this.audio?.play()
       this.playing = true
     }
+
+
   }
 
   @Builder
@@ -59,11 +62,14 @@ export default struct PlayPage {
         Image(this.audioAvatar).borderRadius(8).width(200).height(200).border({ width: 1, color: '#eee' })
       }.width("100%").alignItems(HorizontalAlign.Center).padding({ top: 50, bottom: 50 })
 
+      //歌词
       Scroll() {
         Column() {
-          // Text(this.audioLyric)
-        }.width("100%").height(60).alignItems(HorizontalAlign.Center).padding({ top: 15, bottom: 60 })
-      }
+          ForEach(parseLyric(this.audioLyric), (item: LyricItem) => {
+            Text(item.lyric).fontColor(this.audioCurrentDuration > item.timestamp ? 'green' : '#ffefeeee').height(40)
+          })
+        }.width("100%").alignItems(HorizontalAlign.Center)
+      }.height(120).margin({ top: 15, bottom: 60 })
 
 
       Column() {
