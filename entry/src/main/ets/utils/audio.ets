@@ -62,6 +62,7 @@ export class AVPlayerDemo {
         case 'completed': // 播放结束后触发该状态机上报
           console.info('AVPlayer state completed called.');
           avPlayer.stop(); //调用播放结束接口
+          AppStorage.setOrCreate('playing', false)
           break;
         case 'stopped': // stop接口成功调用后触发该状态机上报
           console.info('AVPlayer state stopped called.');

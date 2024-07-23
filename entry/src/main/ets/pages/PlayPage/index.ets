@@ -17,8 +17,9 @@ export default struct PlayPage {
   @StorageLink('audioCurrentDuration') @Watch('currentDurationChange') audioCurrentDuration: number = 0;
   @StorageLink('audioAvatar') audioAvatar: string | undefined =
     'https://img1.baidu.com/it/u=147435362,3227015063&fm=253&fmt=auto&app=138&f=JPEG?w=565&h=855';
-  @StorageLink('playing') playing: boolean = false;
+  @StorageLink('playing') @Watch('onChangePlaying') playing: boolean = false;
   @StorageLink('audioLyric') audioLyric: string = '';
+  @State lyrics: LyricItem[] = []
   private scroll: Scroller = new Scroller();
 
   pageTransition() {
@@ -28,19 +29,30 @@ export default struct PlayPage {
       .slide(SlideEffect.Bottom)
   }
 
-  handleSwitch() {
+  onChangePlaying() {
     if (this.playing) {
-      this.audio?.pause()
-      this.playing = false
-    } else {
       this.audio?.play()
-      this.playing = true
-    }
 
+    } else {
+      this.audio?.pause()
+
+    }
   }
 
   currentDurationChange() {
-    console.log('currentDurationChange:', String(this.audioCurrentDuration))
+    // console.log('currentDurationChange:', String(this.audioCurrentDuration))
+    const datas = parseLyric(this.audioLyric)
+    const last = datas.filter(item => item.timestamp < this.audioCurrentDuration).pop()
+    let lastIndex = 0
+    // console.log(JSON.stringify(last))
+    this.lyrics = parseLyric(this.audioLyric).map((item, index) => {
+      if (last?.timestamp === item.timestamp) {
+        item.isCurrent = true
+        lastIndex = index
+      }
+      return item
+    })
+    this.scroll.scrollToIndex(lastIndex, true, ScrollAlign.CENTER)
   }
 
   @Builder
@@ -67,19 +79,30 @@ export default struct PlayPage {
       }.width("100%").alignItems(HorizontalAlign.Center).padding({ top: 50, bottom: 50 })
 
       //歌词
-      Scroll(this.scroll) {
-        Column() {
-          ForEach(parseLyric(this.audioLyric), (item: LyricItem) => {
+      List({ scroller: this.scroll, }) {
+        ForEach(this.lyrics, (item: LyricItem) => {
+          ListItem() {
             Text(item.lyric)
-              .fontColor(this.audioCurrentDuration > item.timestamp ? 'green' : '#ffefeeee')
+              .fontColor(item.isCurrent ? 'green' : '#ffefeeee')
               .height(40)
-          })
-        }
-        .width("100%")
-        .alignItems(HorizontalAlign.Center)
+            // .blendMode(BlendMode.DST_IN, BlendApplyType.OFFSCREEN)
+          }
+
+          // .linearGradient({
+          //
+          //   direction: GradientDirection.Right,
+          //
+          //   colors: [[0xff0000, 0.0], [0xff0000, 0.3], [0x000000, 0.6], [0x000000, 1.0]]
+          //
+          // })
+          // .blendMode(BlendMode.SRC_OVER, BlendApplyType.OFFSCREEN)
+
+        })
+
       }
       .height(120)
       .margin({ top: 15, bottom: 60 })
+      .alignListItem(ListItemAlign.Center)
 
 
       Column() {
@@ -95,10 +118,6 @@ export default struct PlayPage {
         .width("100%")
 
 
-        // Column() {
-        //   Text(`播放进度：${(this.audioCurrentDuration / this.audioDuration) * 100} %`)
-        // }
-
         Column() {
           Flex({ alignItems: ItemAlign.Center }) {
             Text(this.parseDuration(this.audioCurrentDuration))
@@ -106,17 +125,19 @@ export default struct PlayPage {
               .textAlign(TextAlign.Start)
               .fontColor('#ffefeeee')
             Column() {
-              // Row()
-              //   .width(10)
-              //   .height(10)
-              //   .backgroundColor('#fff')
-              //   .borderRadius(50)
-              //   .position({ x: `${(this.audioCurrentDuration / this.audioDuration) * 100}%`, y: -4 })
-              Row()
-                .width(`${(this.audioCurrentDuration / this.audioDuration) * 100}%`)
-                .height(2)
-                .position({ left: 0 })
-                .backgroundColor('#fff')
+              Row() {
+                Row()
+                  .width(7)
+                  .height(7)
+                  .borderRadius(50)
+                  .backgroundColor('#fff')
+                  .margin({ left: '100%' })
+              }
+              .width(`${(this.audioCurrentDuration / this.audioDuration) * 100}%`)
+              .height(2)
+              .position({ left: 0 })
+              .backgroundColor('#fff')
+
             }
             .height(2)
             .width('100%')
@@ -140,9 +161,9 @@ export default struct PlayPage {
                 .playing
                 ?
                 'audio_pause' : 'audio_play',
-              onClick: this
-                .handleSwitch
-                .bind(this)
+              onClick: () => {
+                this.playing = !this.playing
+              }
             })
             this.Action({ icon: 'audio_next' })
             this.Action({ icon: 'audio_list' })

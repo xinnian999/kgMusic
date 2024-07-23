@@ -1,7 +1,8 @@
 export interface LyricItem {
   lyric: string,
   timestamp: number,
-  isCurrent?: boolean
+  isCurrent?: boolean,
+
 }
 
 function parseLyric(lyricStr: string) {
@@ -19,7 +20,10 @@ function parseLyric(lyricStr: string) {
         timestamp
       } as LyricItem
     }
-    return item
+    return {
+      lyric: item,
+      timestamp: 0
+    } as LyricItem
   })
 
 }
