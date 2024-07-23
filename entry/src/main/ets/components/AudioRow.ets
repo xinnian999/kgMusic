@@ -3,7 +3,6 @@ import request from '../api/request';
 import { media } from '@kit.MediaKit';
 import { getMusicUrlApi, getLyricIdApi, getLyricApi } from '../api/getUrl';
 import { AVPlayerDemo } from '../utils/audio';
-import parseLyric from '../pages/PlayPage/parseLyric';
 
 @Component
 export default struct AudioRow {
@@ -49,7 +48,7 @@ export default struct AudioRow {
       this.audioLyric = lyricRes.data.decodeContent
 
       const urlRes: AxiosResponse = await getMusicUrlApi(this.hash)
-
+      console.log(JSON.stringify(urlRes))
       const url: string = urlRes.data.url[0]
       this.audio = await new AVPlayerDemo().avPlayerLiveDemo(url)
       this.audioId = this.aid

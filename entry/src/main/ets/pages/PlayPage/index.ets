@@ -20,6 +20,7 @@ export default struct PlayPage {
   @StorageLink('playing') @Watch('onChangePlaying') playing: boolean = false;
   @StorageLink('audioLyric') audioLyric: string = '';
   @State lyrics: LyricItem[] = []
+  @State expandLyric: boolean = false
   private scroll: Scroller = new Scroller();
 
   pageTransition() {
@@ -78,9 +79,19 @@ export default struct PlayPage {
 
   build() {
     Column() {
-      Column() {
-        Image(this.audioAvatar).borderRadius(8).width(200).height(200).border({ width: 1, color: '#eee' })
-      }.width("100%").alignItems(HorizontalAlign.Center).padding({ top: 50, bottom: 50 })
+      if (!this.expandLyric) {
+        Column() {
+          Image(this.audioAvatar)
+            .borderRadius(8)
+            .width(200)
+            .height(200)
+            .border({ width: 1, color: '#eee' })
+        }
+        .width("100%")
+        .alignItems(HorizontalAlign.Center)
+        .padding({ top: 50, bottom: 50 })
+      }
+
 
       //歌词
       List({ scroller: this.scroll, }) {
@@ -89,24 +100,16 @@ export default struct PlayPage {
             Text(item.lyric)
               .fontColor(item.isCurrent ? 'green' : '#ffefeeee')
               .height(40)
-            // .blendMode(BlendMode.DST_IN, BlendApplyType.OFFSCREEN)
           }
-
-          // .linearGradient({
-          //
-          //   direction: GradientDirection.Right,
-          //
-          //   colors: [[0xff0000, 0.0], [0xff0000, 0.3], [0x000000, 0.6], [0x000000, 1.0]]
-          //
-          // })
-          // .blendMode(BlendMode.SRC_OVER, BlendApplyType.OFFSCREEN)
 
         })
 
       }
-      .height(120)
       .margin({ top: 15, bottom: 60 })
       .alignListItem(ListItemAlign.Center)
+      .onClick(() => this.expandLyric = !this.expandLyric)
+      .layoutWeight(1)
+
 
       //歌曲信息
       Column() {
@@ -177,7 +180,7 @@ export default struct PlayPage {
             this.Action({ icon: 'audio_next' })
             this.Action({ icon: 'audio_list' })
           }.width('100%')
-        }
+        }.margin({ bottom: 30 })
       }
 
     }
