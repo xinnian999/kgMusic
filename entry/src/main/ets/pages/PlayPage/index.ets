@@ -40,11 +40,9 @@ export default struct PlayPage {
   }
 
   currentDurationChange() {
-    // console.log('currentDurationChange:', String(this.audioCurrentDuration))
     const datas = parseLyric(this.audioLyric)
     const last = datas.filter(item => item.timestamp < this.audioCurrentDuration).pop()
     let lastIndex = 0
-    // console.log(JSON.stringify(last))
     this.lyrics = parseLyric(this.audioLyric).map((item, index) => {
       if (last?.timestamp === item.timestamp) {
         item.isCurrent = true
@@ -70,6 +68,12 @@ export default struct PlayPage {
     const right = seconds >= 10 ? seconds : `0${seconds}`
     const left = minutes >= 10 ? minutes : `0${minutes}`
     return `${left}:${right}`
+  }
+
+  onProgressClick(event: ClickEvent) {
+    const newDuration = (event.x / (event.target.area.width as number)) * this.audioDuration
+    console.log(newDuration + '');
+    this.audio?.seek(newDuration)
   }
 
   build() {
@@ -104,7 +108,7 @@ export default struct PlayPage {
       .margin({ top: 15, bottom: 60 })
       .alignListItem(ListItemAlign.Center)
 
-
+      //歌曲信息
       Column() {
         Column({ space: 15 }) {
           Text(this.audioName)
@@ -117,7 +121,7 @@ export default struct PlayPage {
         .alignItems(HorizontalAlign.Start)
         .width("100%")
 
-
+        //进度条
         Column() {
           Flex({ alignItems: ItemAlign.Center }) {
             Text(this.parseDuration(this.audioCurrentDuration))
@@ -125,23 +129,28 @@ export default struct PlayPage {
               .textAlign(TextAlign.Start)
               .fontColor('#ffefeeee')
             Column() {
-              Row() {
-                Row()
-                  .width(7)
-                  .height(7)
-                  .borderRadius(50)
-                  .backgroundColor('#fff')
-                  .margin({ left: '100%' })
+              Column() {
+                Row() {
+                  Row()
+                    .width(7)
+                    .height(7)
+                    .borderRadius(50)
+                    .backgroundColor('#fff')
+                    .margin({ left: '100%' })
+                }
+                .width(`${(this.audioCurrentDuration / this.audioDuration) * 100}%`)
+                .height(2)
+                .position({ left: 0 })
+                .backgroundColor('#fff')
               }
-              .width(`${(this.audioCurrentDuration / this.audioDuration) * 100}%`)
               .height(2)
-              .position({ left: 0 })
-              .backgroundColor('#fff')
-
+              .width('100%')
+              .backgroundColor('#ffc4c2c2')
             }
-            .height(2)
-            .width('100%')
-            .backgroundColor('#ffc4c2c2')
+            .height(10)
+            .justifyContent(FlexAlign.Center)
+            .onClick(this.onProgressClick.bind(this))
+
 
             Text(this.parseDuration(this.audioDuration))
               .width(70)
