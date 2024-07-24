@@ -1,4 +1,5 @@
 import { media } from '@kit.MediaKit';
+import Playing from '../../components/Playing';
 import parseLyric, { LyricItem } from './parseLyric'
 
 interface ActionParams {
@@ -148,7 +149,7 @@ export default struct PlayPage {
               }
               .height(2)
               .width('100%')
-              .backgroundColor('#ffc4c2c2')
+              .backgroundColor('#ff918f8f')
             }
             .height(10)
             .justifyContent(FlexAlign.Center)

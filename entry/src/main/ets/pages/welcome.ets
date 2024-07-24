@@ -9,7 +9,7 @@ struct Welcome {
   async onDidBuild(): Promise<void> {
     setTimeout(() => {
       this.playMusic()
-      router.pushUrl({ url: "pages/Index/index", params: null })
+      router.replaceUrl({ url: "pages/Index/index", params: null })
     }, 2000)
   }
 

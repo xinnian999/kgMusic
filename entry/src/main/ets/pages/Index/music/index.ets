@@ -17,11 +17,14 @@ interface AudioItem {
 @Component
 export default struct My {
   @State songList: AudioItem[] = []
+  @State isLoading: boolean = false
 
   async fetchSongList() {
+    this.isLoading = true
     const res: AxiosResponse = await request(`/top/card?card_id=3&timestamp=${Date.now()}`)
     this.songList = res.data.data.song_list
-    console.log(JSON.stringify(res.data.data.song_list))
+    this.isLoading = false
+
   }
 
   async onDidBuild() {
@@ -93,6 +96,10 @@ export default struct My {
             Image($r('app.media.refresh'))
               .width(18)
               .height(18)
+              .rotate({ angle: this.isLoading ? 360 : 0 })
+              .animation({
+                duration: 700,
+              })
               .onClick(this.fetchSongList.bind(this))
           }
 
