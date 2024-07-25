@@ -16,7 +16,7 @@ export default struct AudioRow {
   @StorageLink('audioDuration') audioDuration: number = 0;
   @StorageLink('audioLyric') audioLyric: string = '';
   @StorageLink('playing') playing: boolean = false;
-  // @StorageProp('playList') playList:=[]
+  @StorageProp('playList') playList: AudioRowItem[] = []
   @Prop data: AudioRowItem = {
     aid: 0,
     name: '歌名',
@@ -24,6 +24,7 @@ export default struct AudioRow {
     albumId: 0,
     hash: ''
   }
+  @Prop list: AudioRowItem[] = []
   @State avatar: string = ''
 
   async onDidBuild() {
@@ -62,7 +63,7 @@ export default struct AudioRow {
       this.audioAvatar = this.avatar
       this.audioDuration = urlRes.data.std_hash_time
       this.playing = true
-
+      this.playList = this.list
     }
   }
 

@@ -4,14 +4,7 @@ import { common } from '@kit.AbilityKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 
 export class AVPlayerDemo {
-  private count: number = 0;
-  private isSeek: boolean = true; // 用于区分模式是否支持seek操作
-  private fileSize: number = -1;
-  private fd: number = 0;
-
-  constructor() {
-    
-  }
+  // audio: media.AVPlayer | null = null;
 
   // 注册avplayer回调函数
   setAVPlayerCallback(avPlayer: media.AVPlayer) {
@@ -96,7 +89,6 @@ export class AVPlayerDemo {
     // 打开相应的资源文件地址获取fd，并为url赋值触发initialized状态机上报
     let file = await fileIo.open(path);
     fdPath = fdPath + '' + file.fd;
-    this.isSeek = false; // 支持seek操作
     avPlayer.url = fdPath;
     console.log('AVPlayer fdPath', fdPath)
   }
@@ -108,7 +100,6 @@ export class AVPlayerDemo {
     let avPlayer: media.AVPlayer = await media.createAVPlayer();
     // 创建状态机变化回调函数
     this.setAVPlayerCallback(avPlayer);
-    this.isSeek = false; // 不支持seek操作
     avPlayer.url = url;
 
     return avPlayer
