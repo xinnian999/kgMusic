@@ -9,6 +9,10 @@ export class AVPlayerDemo {
   private fileSize: number = -1;
   private fd: number = 0;
 
+  constructor() {
+    
+  }
+
   // 注册avplayer回调函数
   setAVPlayerCallback(avPlayer: media.AVPlayer) {
     // avPlayer.loop = true

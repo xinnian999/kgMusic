@@ -1,25 +1,15 @@
 import { singerAudiosApi } from './api'
 import type { AxiosResponse } from '@ohos/axios'
 import router from '@ohos.router'
-import { Singer } from '.';
 import PlayBar from '../../components/PlayBar';
 import AudioRow from '../../components/AudioRow';
-import { JSON } from '@kit.ArkTS';
+import { SingerItem, SingerAudio } from '../../interface/singer';
 
-
-interface SingerAudio {
-  audio_id: number,
-  album_id: number,
-  audio_name: string,
-  author_name: string,
-  album_name: string,
-  hash: string
-}
 
 @Entry
 @Component
 struct Detail {
-  routerParams: Singer = router.getParams() as Singer;
+  routerParams: SingerItem = router.getParams() as SingerItem;
   @State singerAudios: SingerAudio[] = []
 
   async onDidBuild() {
@@ -52,14 +42,16 @@ struct Detail {
           .padding(15)
 
           Column() {
-            ForEach(this.singerAudios, (item: SingerAudio, index) => {
+            ForEach(this.singerAudios, (item: SingerAudio) => {
 
               AudioRow({
-                aid: item.audio_id,
-                name: item.audio_name,
-                author: item.author_name,
-                hash: item.hash,
-                albumId: item.album_id,
+                data: {
+                  aid: item.audio_id,
+                  name: item.audio_name,
+                  author: item.author_name,
+                  hash: item.hash,
+                  albumId: item.album_id,
+                }
               })
             })
           }

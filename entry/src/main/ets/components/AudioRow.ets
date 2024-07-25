@@ -4,6 +4,7 @@ import { media } from '@kit.MediaKit';
 import { getMusicUrlApi, getLyricIdApi, getLyricApi } from '../api/getUrl';
 import { AVPlayerDemo } from '../utils/audio';
 import Playing from './Playing';
+import { AudioRowItem } from '../interface/components';
 
 @Component
 export default struct AudioRow {
@@ -15,20 +16,23 @@ export default struct AudioRow {
   @StorageLink('audioDuration') audioDuration: number = 0;
   @StorageLink('audioLyric') audioLyric: string = '';
   @StorageLink('playing') playing: boolean = false;
-  @Prop aid: number = 0;
-  @Prop name: string = '';
-  @Prop author: string = '';
-  @Prop albumId: number = 0;
-  @Prop hash: string = '';
+  // @StorageProp('playList') playList:=[]
+  @Prop data: AudioRowItem = {
+    aid: 0,
+    name: '歌名',
+    author: '演唱者',
+    albumId: 0,
+    hash: ''
+  }
   @State avatar: string = ''
 
   async onDidBuild() {
-    const res: AxiosResponse = await request(`/album?album_id=${this.albumId}`)
+    const res: AxiosResponse = await request(`/album?album_id=${this.data.albumId}`)
     this.avatar = res.data.data[0].sizable_cover.replace('\{size\}', 120)
   }
 
   async handlePlay() {
-    if (this.aid === this.audioId) {
+    if (this.data.aid === this.audioId) {
 
       if (this.playing) {
         this.audio?.pause()
@@ -43,18 +47,18 @@ export default struct AudioRow {
       this.audio?.release()
 
       //获取歌词
-      const lyricIdRes: AxiosResponse = await getLyricIdApi(this.hash)
+      const lyricIdRes: AxiosResponse = await getLyricIdApi(this.data.hash)
       const lyricRes: AxiosResponse =
         await getLyricApi(lyricIdRes.data.candidates[0].id, lyricIdRes.data.candidates[0].accesskey)
       this.audioLyric = lyricRes.data.decodeContent
 
-      const urlRes: AxiosResponse = await getMusicUrlApi(this.hash)
+      const urlRes: AxiosResponse = await getMusicUrlApi(this.data.hash)
       // console.log(JSON.stringify(urlRes))
       const url: string = urlRes.data.url[0]
       this.audio = await new AVPlayerDemo().avPlayerLiveDemo(url)
-      this.audioId = this.aid
-      this.audioName = this.name
-      this.authorName = this.author
+      this.audioId = this.data.aid
+      this.audioName = this.data.name
+      this.authorName = this.data.author
       this.audioAvatar = this.avatar
       this.audioDuration = urlRes.data.std_hash_time
       this.playing = true
@@ -69,7 +73,7 @@ export default struct AudioRow {
         Column() {
           Image(this.avatar)
             .borderRadius(8)
-          if (this.aid === this.audioId) {
+          if (this.data.aid === this.audioId) {
             Column() {
               Column() {
                 Playing()
@@ -91,11 +95,11 @@ export default struct AudioRow {
         .height(50)
 
         Column() {
-          Text(this.name)
+          Text(this.data.name)
             .margin({ bottom: 10 })
-            .fontColor(this.aid === this.audioId ? '#3d98ff' : '')
-          Text(`${this.author}`).fontSize(13).fontColor('#999')
-            .fontColor(this.aid === this.audioId ? '#3d98ff' : '')
+            .fontColor(this.data.aid === this.audioId ? '#3d98ff' : '')
+          Text(`${this.data.author}`).fontSize(13).fontColor('#999')
+            .fontColor(this.data.aid === this.audioId ? '#3d98ff' : '')
         }
         .alignItems(HorizontalAlign.Start)
         .margin({ left: 15 })

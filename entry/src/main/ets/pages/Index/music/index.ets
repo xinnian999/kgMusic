@@ -4,19 +4,11 @@ import router from '@ohos.router'
 import request from '../../../api/request'
 import { AxiosResponse } from '@ohos/axios'
 import AudioRow from '../../../components/AudioRow'
-
-interface AudioItem {
-  songid: number,
-  album_id: number,
-  songname: string,
-  author_name: string,
-  album_name: string,
-  hash: string
-}
+import { HotAudioItem } from '../../../interface'
 
 @Component
 export default struct My {
-  @State songList: AudioItem[] = []
+  @State songList: HotAudioItem[] = []
   @State isLoading: boolean = false
 
   async fetchSongList() {
@@ -104,14 +96,16 @@ export default struct My {
           }
 
 
-          ForEach(this.songList, (item: AudioItem, index) => {
+          ForEach(this.songList, (item: HotAudioItem) => {
 
             AudioRow({
-              aid: item.songid,
-              name: item.songname,
-              author: item.author_name,
-              hash: item.hash,
-              albumId: item.album_id
+              data: {
+                aid: item.songid,
+                name: item.songname,
+                author: item.author_name,
+                hash: item.hash,
+                albumId: item.album_id
+              }
             })
           })
         }

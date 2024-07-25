@@ -42,11 +42,13 @@ export default struct SearchPage {
 
       ForEach(this.songs, (item: SongType, index) => {
         AudioRow({
-          aid: Number(item.ID),
-          name: item.SongName,
-          author: item.SingerName,
-          hash: item.FileHash,
-          albumId: Number(item.AlbumID)
+          data: {
+            aid: Number(item.ID),
+            name: item.SongName,
+            author: item.SingerName,
+            hash: item.FileHash,
+            albumId: Number(item.AlbumID)
+          }
         })
       })
     }.padding(15)

@@ -2,18 +2,13 @@ import { singerListApi } from './api'
 import type { AxiosResponse } from '@ohos/axios'
 import router from '@ohos.router'
 import PlayBar from '../../components/PlayBar'
+import { SingerItem } from '../../interface/singer'
 
-export interface Singer {
-  imgurl: string,
-  singername: string,
-  fanscount: number,
-  singerid: number
-}
 
 @Entry
 @Component
 struct Index {
-  @State singerList: Singer[] = []
+  @State singerList: SingerItem[] = []
 
   async onDidBuild() {
     const res: AxiosResponse = await singerListApi()
@@ -25,7 +20,7 @@ struct Index {
     Column() {
       Scroll() {
         Column() {
-          ForEach(this.singerList, (item: Singer, index) => {
+          ForEach(this.singerList, (item: SingerItem) => {
             GridItem() {
               Flex({ alignItems: ItemAlign.Center }) {
                 Column() {
