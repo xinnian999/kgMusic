@@ -7,6 +7,7 @@ import AudioRow from '../../../components/AudioRow'
 import { HotAudioItem } from '../../../interface'
 import { AudioRowItem } from '../../../interface/components'
 import PlayList from '../../../components/playList'
+import PlayBar from '../../../components/PlayBar'
 
 @Component
 export default struct My {
@@ -37,6 +38,7 @@ export default struct My {
     .alignItems(HorizontalAlign.Start)
     .borderRadius(10)
     .padding(10)
+
     .onClick(() => {
       if (data.to) {
         router.replaceUrl({ url: data.to, params: null })

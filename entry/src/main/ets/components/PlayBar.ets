@@ -62,5 +62,6 @@ export default struct PlayBar {
     .onClick(() => {
       router.pushUrl({ url: "pages/PlayPage/index" })
     })
+    .sharedTransition("bar", { duration: 3000 })
   }
 }
