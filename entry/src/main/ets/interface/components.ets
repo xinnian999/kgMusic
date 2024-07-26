@@ -4,4 +4,5 @@ export interface AudioRowItem {
   author: string
   albumId: number
   hash: string
+  avatar?: string
 }

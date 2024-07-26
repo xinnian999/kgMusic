@@ -51,6 +51,7 @@ struct Detail {
                   author: item.author_name,
                   hash: item.hash,
                   albumId: item.album_id,
+                  avatar: ''
                 }
               })
             })

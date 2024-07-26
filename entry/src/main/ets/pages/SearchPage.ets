@@ -47,7 +47,8 @@ export default struct SearchPage {
             name: item.SongName,
             author: item.SingerName,
             hash: item.FileHash,
-            albumId: Number(item.AlbumID)
+            albumId: Number(item.AlbumID),
+            avatar:''
           }
         })
       })

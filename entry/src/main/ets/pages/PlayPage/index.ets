@@ -20,6 +20,7 @@ export default struct PlayPage {
     'https://img1.baidu.com/it/u=147435362,3227015063&fm=253&fmt=auto&app=138&f=JPEG?w=565&h=855';
   @StorageLink('playing') @Watch('onChangePlaying') playing: boolean = false;
   @StorageLink('audioLyric') audioLyric: string = '';
+  @StorageLink('playIndex') playIndex: number = 999
   @State lyrics: LyricItem[] = []
   @State expandLyric: boolean = false
   private scroll: Scroller = new Scroller();
@@ -168,7 +169,11 @@ export default struct PlayPage {
         Column() {
           Flex({ alignItems: ItemAlign.Center, justifyContent: FlexAlign.SpaceBetween }) {
             this.Action({ icon: 'audio_random' })
-            this.Action({ icon: 'audio_prev' })
+            this.Action({
+              icon: 'audio_prev', onClick: () => {
+                this.playIndex = this.playIndex - 1
+              }
+            })
             this.Action({
               icon: this
                 .playing
@@ -178,7 +183,12 @@ export default struct PlayPage {
                 this.playing = !this.playing
               }
             })
-            this.Action({ icon: 'audio_next' })
+            this.Action({
+              icon: 'audio_next',
+              onClick: () => {
+                this.playIndex = this.playIndex + 1
+              }
+            })
             this.Action({ icon: 'audio_list' })
           }.width('100%')
         }.margin({ bottom: 30 })

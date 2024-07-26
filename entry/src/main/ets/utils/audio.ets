@@ -6,6 +6,11 @@ import { BusinessError } from '@kit.BasicServicesKit';
 export class AVPlayerDemo {
   // audio: media.AVPlayer | null = null;
 
+  playNext() {
+    const index: number = AppStorage.get('playIndex')!
+    AppStorage.setOrCreate('playIndex', index + 1)
+  }
+
   // 注册avplayer回调函数
   setAVPlayerCallback(avPlayer: media.AVPlayer) {
     // avPlayer.loop = true
@@ -28,6 +33,8 @@ export class AVPlayerDemo {
         case 'idle': // 成功调用reset接口后触发该状态机上报
           console.info('AVPlayer state idle called.');
           avPlayer.release(); // 调用release接口销毁实例对象
+
+          this.playNext()
           break;
         case 'initialized': // avplayer 设置播放源后触发该状态上报
           console.info('AVPlayer state initialized called.');

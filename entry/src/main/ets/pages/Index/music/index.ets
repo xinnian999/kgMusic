@@ -6,6 +6,7 @@ import { AxiosResponse } from '@ohos/axios'
 import AudioRow from '../../../components/AudioRow'
 import { HotAudioItem } from '../../../interface'
 import { AudioRowItem } from '../../../interface/components'
+import PlayList from '../../../components/playList'
 
 @Component
 export default struct My {
@@ -97,24 +98,15 @@ export default struct My {
           }
 
 
-          ForEach(this.songList, (item: HotAudioItem) => {
-
-            AudioRow({
-              data: {
-                aid: item.songid,
-                name: item.songname,
-                author: item.author_name,
-                hash: item.hash,
-                albumId: item.album_id
-              },
-              list: this.songList.map<AudioRowItem>(v => ({
-                aid: v.songid,
-                name: v.songname,
-                author: v.author_name,
-                hash: v.hash,
-                albumId: v.album_id
-              }))
-            })
+          PlayList({
+            dataSource: this.songList.map<AudioRowItem>(v => ({
+              aid: v.songid,
+              name: v.songname,
+              author: v.author_name,
+              hash: v.hash,
+              albumId: v.album_id,
+              avatar: ''
+            }))
           })
         }
         .width('100%')
