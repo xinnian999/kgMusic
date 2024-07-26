@@ -1,5 +1,5 @@
 import { codeLoginApi, sendCodeApi } from '../../api/login';
-import { router } from '@kit.ArkUI';
+import { promptAction, router } from '@kit.ArkUI';
 import { AxiosResponse } from '@ohos/axios';
 
 
@@ -40,17 +40,17 @@ export default struct CodeLogin {
 
   private async handleSendCode() {
     if (!this.username) {
-      AlertDialog.show({ message: '请先输入手机号' })
+      promptAction.showToast({ message: '请先输入手机号' })
       return
     }
     await sendCodeApi(this.username)
     // console.log(JSON.stringify(res.result))
-    AlertDialog.show({ message: '验证码已发送' })
+    promptAction.showToast({ message: '验证码已发送' })
   }
 
   private async handleSubmit() {
     const res: AxiosResponse = await codeLoginApi(this.username, this.code)
-    AlertDialog.show({ message: '登陆成功' })
+    promptAction.showToast({ message: '登陆成功' })
 
     AppStorage.setOrCreate('userInfo', res.data)
 

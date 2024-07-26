@@ -33,7 +33,7 @@ struct Login {
 
         }.height('60%')
 
-        Button('测试获取歌曲URL').onClick(this.handleGetUrl.bind(this)).margin({ top: 30 })
+        // Button('测试获取歌曲URL').onClick(this.handleGetUrl.bind(this)).margin({ top: 30 })
 
       }.alignRules({
         center: { anchor: '__container__', align: VerticalAlign.Center },

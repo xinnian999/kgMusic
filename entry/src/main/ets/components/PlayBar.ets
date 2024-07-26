@@ -60,8 +60,8 @@ export default struct PlayBar {
     .markAnchor({ y: '100%' })
     .visibility(this.audioId ? Visibility.Visible : Visibility.Hidden)
     .onClick(() => {
-      router.pushUrl({ url: "pages/PlayPage/index" })
+      router.pushUrl({ url: "pages/PlayPage/index" }, router.RouterMode.Single)
     })
-    .sharedTransition("bar", { duration: 3000 })
+    .sharedTransition("PlayBar", { duration: 300 })
   }
 }

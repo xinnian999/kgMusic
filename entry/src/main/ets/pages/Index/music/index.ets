@@ -41,7 +41,7 @@ export default struct My {
 
     .onClick(() => {
       if (data.to) {
-        router.replaceUrl({ url: data.to, params: null })
+        router.pushUrl({ url: data.to, params: null })
       }
     })
   }

@@ -47,11 +47,11 @@ struct Index {
       .scrollBarColor("#999")
       .scrollBarWidth(5)
       .edgeEffect(EdgeEffect.Fade)
-      .height('100%')
+
 
       PlayBar()
 
     }
-
+    .height('100%')
   }
 }
