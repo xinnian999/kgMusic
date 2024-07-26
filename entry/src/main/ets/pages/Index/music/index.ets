@@ -39,7 +39,7 @@ export default struct My {
     .padding(10)
     .onClick(() => {
       if (data.to) {
-        router.pushUrl({ url: data.to, params: null })
+        router.replaceUrl({ url: data.to, params: null })
       }
     })
   }

@@ -4,6 +4,8 @@ import router from '@ohos.router'
 import PlayBar from '../../components/PlayBar';
 import AudioRow from '../../components/AudioRow';
 import { SingerItem, SingerAudio } from '../../interface/singer';
+import PlayList from '../../components/playList';
+import { AudioRowItem } from '../../interface/components';
 
 
 @Entry
@@ -42,18 +44,16 @@ struct Detail {
           .padding(15)
 
           Column() {
-            ForEach(this.singerAudios, (item: SingerAudio) => {
 
-              AudioRow({
-                data: {
-                  aid: item.audio_id,
-                  name: item.audio_name,
-                  author: item.author_name,
-                  hash: item.hash,
-                  albumId: item.album_id,
-                  avatar: ''
-                }
-              })
+            PlayList({
+              dataSource: this.singerAudios.map<AudioRowItem>(v => ({
+                aid: v.audio_id,
+                name: v.audio_name,
+                author: v.author_name,
+                hash: v.hash,
+                albumId: v.album_id,
+                avatar: ''
+              }))
             })
           }
           .padding({ left: 15, right: 15 })
