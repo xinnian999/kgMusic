@@ -2,6 +2,8 @@ import navConfig from './navConfig';
 import Music from './music'
 import My from './my'
 import PlayBar from '../../components/PlayBar'
+import { MusicPlayer } from '../../utils'
+import { media } from '@kit.MediaKit';
 
 PersistentStorage.persistProp('kgCookie', '12');
 PersistentStorage.persistProp('userInfo', {});
@@ -9,7 +11,12 @@ PersistentStorage.persistProp('userInfo', {});
 @Entry
 @Component
 struct Index {
+  @StorageLink('player') player: MusicPlayer | null = null;
   @State activeMenu: string = 'music'
+
+  aboutToAppear(): void {
+    this.player = new MusicPlayer()
+  }
 
   build() {
     Column() {

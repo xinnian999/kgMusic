@@ -19,7 +19,6 @@ export default struct My {
     const res: AxiosResponse = await request(`/top/card?card_id=3&timestamp=${Date.now()}`)
     this.songList = res.data.data.song_list
     this.isLoading = false
-
   }
 
   async onDidBuild() {
