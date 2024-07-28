@@ -4,6 +4,7 @@ import My from './my'
 import PlayBar from '../../components/PlayBar'
 import { MusicPlayer } from '../../utils'
 import { media } from '@kit.MediaKit';
+import PlayBar2 from '../../components/PlayBar2';
 
 PersistentStorage.persistProp('kgCookie', '12');
 PersistentStorage.persistProp('userInfo', {});
@@ -26,7 +27,7 @@ struct Index {
         } else if (this.activeMenu === 'my') {
           My()
         }
-        PlayBar()
+        PlayBar2()
 
       }
       .padding({ top: 20 })
